@@ -9,7 +9,7 @@ SDL_Window *window = NULL;
 SDL_Renderer *renderer = NULL;
 
 int setupSdl() {
-    SDL_Init(SDL_INIT_VIDEO);
+    SDL_Init(SDL_INIT_VIDEO|SDL_INIT_EVENTS);
 
     window = SDL_CreateWindow(
         NAME,
@@ -50,8 +50,18 @@ int game(int argc, char *argv[]){
     }
 
     // load image
-    SDL_Surface* surface = SDL_LoadBMP("block.bmp");
-    SDL_Texture* block = SDL_CreateTextureFromSurface(renderer, surface);
+    SDL_Surface* surface = NULL;
+    surface = SDL_LoadBMP("block.bmp");
+    if (surface == NULL) {
+        SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Unable to load image block.bmp! SDL Error: %s\n", SDL_GetError());
+        return 1;
+    }
+    SDL_Texture* block = NULL;
+    block = SDL_CreateTextureFromSurface(renderer, surface);
+    if (block == NULL) {
+        SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Unable to load texture for image block.bmp! SDL Error: %s\n", SDL_GetError());
+        return 1;
+    }
     SDL_FreeSurface(surface);
 
     // Create SDL rect
