@@ -1,4 +1,5 @@
 #include <SDL2/SDL.h>
+#include <stdio.h>
 
 #define NAME "Jewels"
 #define WIDTH 480
@@ -45,6 +46,7 @@ void handleEvents(){
 }
 
 int game(int argc, char *argv[]){
+    printf("Starting game\n");
     if (setupSdl() != 0) {
         return 1;
     }
@@ -70,9 +72,37 @@ int game(int argc, char *argv[]){
     blockRect.x = WIDTH/2;
     blockRect.y = HEIGHT/2;
 
+    //Create some additional rects for other tests
+    SDL_Rect smallRect;
+    SDL_QueryTexture(block, NULL, NULL, &smallRect.w, &smallRect.h);
+    smallRect.w = smallRect.w/2;
+    smallRect.h = smallRect.h/2;
+    smallRect.x = 50;
+    smallRect.y = HEIGHT/2;
+
+    SDL_Rect bigRect;
+    SDL_QueryTexture(block, NULL, NULL, &bigRect.w, &bigRect.h);
+    bigRect.w = bigRect.w*2;
+    bigRect.h = bigRect.h*2;
+    bigRect.x = 400;
+    bigRect.y = HEIGHT/2;
+
+    SDL_Rect partialRect;
+    SDL_QueryTexture(block, NULL, NULL, &partialRect.w, &partialRect.h);
+    partialRect.w = blockRect.w;
+    partialRect.h = blockRect.h;
+    partialRect.x = 150;
+    partialRect.y = HEIGHT/2;
+    SDL_Rect partialSourceRect = {0, 0, 16, 16};
+    SDL_Rect partialSourceCorrectRect = {300, HEIGHT/2, 16, 16};
+
     while (!closed) {
         handleEvents();
         SDL_RenderCopy(renderer, block, NULL, &blockRect);
+        SDL_RenderCopy(renderer, block, NULL, &smallRect);
+        SDL_RenderCopy(renderer, block, NULL, &bigRect);
+        SDL_RenderCopy(renderer, block, &partialSourceRect, &partialRect);
+        SDL_RenderCopy(renderer, block, &partialSourceRect, &partialSourceCorrectRect);
         SDL_RenderPresent(renderer);
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
         SDL_RenderClear(renderer);
