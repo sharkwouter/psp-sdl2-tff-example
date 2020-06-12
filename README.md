@@ -1,6 +1,6 @@
 # Jewels SDL texture loading test
 
-This code shows an issue with SDL2 when trying to render a texture. It is not triggered in PPSSPP, but this code will crash when SDL_RenderCopy is called on PSP. Comment it out and the crash won't happen.
+This code shows an is a simple SDL2 example which runs on PSP and Linux. It uses texture rendering to draw a BMP image. This makes it easier to test if there are any issues with SDL2 for PSP.
 
 ## Building
 
