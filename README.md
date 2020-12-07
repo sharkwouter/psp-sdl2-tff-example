@@ -17,7 +17,7 @@ make
 ### VITA
 
 ```
-mkdir psp && cd psp
+mkdir vita && cd vita
 cmake -DCMAKE_TOOLCHAIN_FILE="${VITASDK}/share/vita.toolchain.cmake" ..
 make
 ```
