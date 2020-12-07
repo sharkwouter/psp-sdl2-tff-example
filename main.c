@@ -53,11 +53,7 @@ int game(int argc, char *argv[]){
 
     // load image
     SDL_Surface* surface = NULL;
-#if defined(__vita__)
-    surface = SDL_LoadBMP("app0:/block.bmp");
-#else
     surface = SDL_LoadBMP("block.bmp");
-#endif
     if (surface == NULL) {
         SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Unable to load image block.bmp! SDL Error: %s\n", SDL_GetError());
         return 1;

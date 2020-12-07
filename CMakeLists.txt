@@ -17,26 +17,30 @@ IF(PLATFORM_PSP)
 ELSEIF(VITA)
         set(VITA_TITLEID "JWLT00001")
 
-        include("$ENV{VITASDK}/share/vita.cmake" REQUIRED)
+	include("$ENV{DOLCESDK}/share/dolce.cmake" REQUIRED)
 
         target_link_libraries(${PROJECT_NAME} PRIVATE
                 SDL2
                 vita2d
                 z
                 m
+		pib
                 SceAppMgr_stub
                 SceAppUtil_stub
                 SceAudio_stub
                 SceCommonDialog_stub
                 SceCtrl_stub
                 SceDisplay_stub
+		SceDisplayUser_stub
                 SceGxm_stub
                 SceHid_stub
                 SceSysmodule_stub
                 SceTouch_stub
+		SceMotion_stub
+		libScePiglet_stub
         )
-        vita_create_self(${PROJECT_NAME}.self ${PROJECT_NAME})
-        vita_create_vpk(${PROJECT_NAME}.vpk ${VITA_TITLEID} ${PROJECT_NAME}.self
+        dolce_create_self(${PROJECT_NAME}.self ${PROJECT_NAME})
+        dolce_create_vpk(${PROJECT_NAME}.vpk ${VITA_TITLEID} ${PROJECT_NAME}.self
                 VERSION "01.00"
                 NAME ${PROJECT_NAME}
                 FILE platform/vita/sce_sys sce_sys

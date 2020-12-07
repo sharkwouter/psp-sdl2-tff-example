@@ -18,7 +18,7 @@ make
 
 ```
 mkdir vita && cd vita
-cmake -DCMAKE_TOOLCHAIN_FILE="${VITASDK}/share/vita.toolchain.cmake" ..
+cmake -DCMAKE_TOOLCHAIN_FILE="${DOLCESDK}/share/dolce.toolchain.cmake" ..
 make
 ```
 
