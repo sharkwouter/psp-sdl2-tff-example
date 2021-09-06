@@ -5,13 +5,14 @@ project(jewels)
 add_executable(${PROJECT_NAME} main.c)
 
 IF(PLATFORM_PSP)
-        target_link_libraries(${PROJECT_NAME} PRIVATE SDL2main SDL2 m GL ${PSP_LIBRARIES})
+        target_link_libraries(${PROJECT_NAME} PRIVATE SDL2main SDL2 pspvram pspvalloc m GL ${PSP_LIBRARIES})
         create_pbp_file(
                 TARGET ${PROJECT_NAME}
                 ICON_PATH ICON0.PNG
                 BACKGROUND_PATH NULL
                 PREVIEW_PATH NULL
                 TITLE ${PROJECT_NAME}
+		BUILD_PRX
         )
         file(COPY platform/psp/ICON0.PNG DESTINATION ${CMAKE_BINARY_DIR})
 ELSEIF(VITA)
