@@ -1,7 +1,8 @@
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 #include <stdio.h>
 
-#define NAME "Jewels"
+#define NAME "Font Example"
 #define WIDTH 480
 #define HEIGHT 272
 
@@ -51,58 +52,64 @@ int game(int argc, char *argv[]){
         return 1;
     }
 
-    // load image
-    SDL_Surface* surface = NULL;
-    surface = SDL_LoadBMP("block.bmp");
-    if (surface == NULL) {
-        SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Unable to load image block.bmp! SDL Error: %s\n", SDL_GetError());
-        return 1;
+    if (TTF_Init() == -1) {
+        return 5;
     }
-    SDL_Texture* block = NULL;
-    block = SDL_CreateTextureFromSurface(renderer, surface);
-    if (block == NULL) {
+    // open font files
+    TTF_Font *font2P = TTF_OpenFont("PressStart2P.ttf", 16);
+    if (font2P == NULL) {
+        printf("TTF_OpenFont font2P: %s\n", TTF_GetError());
+        return 2;
+    }
+    TTF_Font *fontSquare = TTF_OpenFont("square_sans_serif_7.ttf", 64);
+    if (fontSquare == NULL) {
+        printf("TTF_OpenFont fontSquare: %s\n", TTF_GetError());
+        return 2;
+    }
+    // load title
+    SDL_Color fontColor = {0, 0, 0};
+    SDL_Surface *surface1 = TTF_RenderUTF8_Blended(fontSquare, "Title", fontColor);
+    if (surface1 == NULL) {
+        printf("TTF_OpenFont: %s\n", TTF_GetError());
+        SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Unable to load create title! SDL Error: %s\n", SDL_GetError());
+        return 3;
+    }
+    SDL_Texture* title = SDL_CreateTextureFromSurface(renderer, surface1);
+    if (title == NULL) {
+        printf("TTF_OpenFont: %s\n", TTF_GetError());
         SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Unable to load texture for image block.bmp! SDL Error: %s\n", SDL_GetError());
-        return 1;
+        return 4;
     }
-    SDL_FreeSurface(surface);
+    SDL_FreeSurface(surface1);
 
-    // Create SDL rect
-    SDL_Rect blockRect;
-    SDL_QueryTexture(block, NULL, NULL, &blockRect.w, &blockRect.h);
-    blockRect.x = WIDTH/2;
-    blockRect.y = HEIGHT/2;
+    // load subtitle
+    SDL_Surface *surface2 = TTF_RenderUTF8_Blended(font2P, "Subtitle", fontColor);
+    if (surface2 == NULL) {
+        SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Unable to load create subtitle! SDL Error: %s\n", SDL_GetError());
+        return 3;
+    }
+    SDL_Texture* subtitle = SDL_CreateTextureFromSurface(renderer, surface2);
+    if (title == NULL) {
+        SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Unable to load texture for image block.bmp! SDL Error: %s\n", SDL_GetError());
+        return 4;
+    }
+    SDL_FreeSurface(surface2);
 
-    //Create some additional rects for other tests
-    SDL_Rect smallRect;
-    SDL_QueryTexture(block, NULL, NULL, &smallRect.w, &smallRect.h);
-    smallRect.w = smallRect.w/2;
-    smallRect.h = smallRect.h/2;
-    smallRect.x = 50;
-    smallRect.y = HEIGHT/2;
+    // Create SDL 
+    SDL_Rect titleRect;
+    SDL_QueryTexture(title, NULL, NULL, &titleRect.w, &titleRect.h);
+    titleRect.x = WIDTH/2 - titleRect.w/2;
+    titleRect.y = HEIGHT/2 - titleRect.h/2;
 
-    SDL_Rect bigRect;
-    SDL_QueryTexture(block, NULL, NULL, &bigRect.w, &bigRect.h);
-    bigRect.w = bigRect.w*2;
-    bigRect.h = bigRect.h*2;
-    bigRect.x = 400;
-    bigRect.y = HEIGHT/2;
-
-    SDL_Rect partialRect;
-    SDL_QueryTexture(block, NULL, NULL, &partialRect.w, &partialRect.h);
-    partialRect.w = blockRect.w;
-    partialRect.h = blockRect.h;
-    partialRect.x = 150;
-    partialRect.y = HEIGHT/2;
-    SDL_Rect partialSourceRect = {0, 0, 16, 16};
-    SDL_Rect partialSourceCorrectRect = {300, HEIGHT/2, 16, 16};
+    SDL_Rect subtitleRect;
+    SDL_QueryTexture(subtitle, NULL, NULL, &subtitleRect.w, &subtitleRect.h);
+    subtitleRect.x = WIDTH/2 - subtitleRect.w/2;
+    subtitleRect.y = titleRect.y + titleRect.h + subtitleRect.h/2;
 
     while (!closed) {
         handleEvents();
-        SDL_RenderCopy(renderer, block, NULL, &blockRect);
-        SDL_RenderCopy(renderer, block, NULL, &smallRect);
-        SDL_RenderCopy(renderer, block, NULL, &bigRect);
-        SDL_RenderCopy(renderer, block, &partialSourceRect, &partialRect);
-        SDL_RenderCopy(renderer, block, &partialSourceRect, &partialSourceCorrectRect);
+        SDL_RenderCopy(renderer, title, NULL, &titleRect);
+        SDL_RenderCopy(renderer, subtitle, NULL, &subtitleRect);
         SDL_RenderPresent(renderer);
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
         SDL_RenderClear(renderer);
@@ -112,6 +119,7 @@ int game(int argc, char *argv[]){
 
 #ifdef __PSP__
 int SDL_main(int argc, char *argv[]) {
+    SDL_strlen("test");
     return game(argc, argv);
 }
 #else

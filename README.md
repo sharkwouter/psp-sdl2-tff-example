@@ -1,8 +1,6 @@
-# Jewels SDL texture loading test
+# PSP SDL2_ttf Font Example
 
-This code shows a simple SDL2 example which runs on PSP, VITA and Linux. It uses texture rendering to draw a BMP image. This makes it easier to test if there are any issues with SDL2 for PSP.
-
-![screenshot](screenshot.png?raw=true)
+This code shows a simple SDL2_ttf example for PSP and Linux. This allows for testing if it works correctly on PSP.
 
 ## Building
 
@@ -11,14 +9,6 @@ This code shows a simple SDL2 example which runs on PSP, VITA and Linux. It uses
 ```
 mkdir psp && cd psp
 psp-cmake ..
-make
-```
-
-### VITA
-
-```
-mkdir vita && cd vita
-cmake -DCMAKE_TOOLCHAIN_FILE="${DOLCESDK}/share/dolce.toolchain.cmake" ..
 make
 ```
 
