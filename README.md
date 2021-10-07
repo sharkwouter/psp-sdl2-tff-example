@@ -2,6 +2,8 @@
 
 This code shows a simple SDL2_ttf example for PSP and Linux. This allows for testing if it works correctly on PSP.
 
+![screenshot](screenshot.png)
+
 ## Building
 
 ### PSP
