@@ -5,7 +5,24 @@ project(font-example)
 add_executable(${PROJECT_NAME} main.c)
 
 IF(PLATFORM_PSP)
-        target_link_libraries(${PROJECT_NAME} PRIVATE SDL2main SDL2 SDL2_ttf png freetype z pspvram pspvalloc m GL ${PSP_LIBRARIES})
+        target_link_libraries(${PROJECT_NAME} PRIVATE
+		SDL2main
+		SDL2_ttf
+		SDL2
+		GL
+		freetype
+		png
+		z
+		pspvram
+		pspdisplay
+		pspvfpu
+		pspgu
+		pspge
+		pspdebug
+		psphprm
+		pspctrl
+		pspaudio
+	)
         create_pbp_file(
                 TARGET ${PROJECT_NAME}
                 ICON_PATH NULL
